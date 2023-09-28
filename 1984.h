@@ -58,8 +58,9 @@ protected:
         Equilateral,
         Isosceles,
         Right,
-        Scalene
-
+        Scalene,
+        Convex,
+        Concave
     };
     static std::unordered_map<TriangleType, std::string> triangleMessages;
 public:
@@ -72,25 +73,37 @@ public:
         triangleMessages.insert(make_pair(Isosceles, "Трикутник рівнобедрений"));
         triangleMessages.insert(make_pair(Right, "Трикутник є прямокутним"));
         triangleMessages.insert(make_pair(Scalene, "Данний трикутник не є спеціальним"));
+        triangleMessages.insert(make_pair(Convex, "Трикутник впуклий"));
+        triangleMessages.insert(make_pair(Concave, "Трикутник опуклий"));
     }
 
     bool isSpecial() const override {
         if (triangleMessages.empty()) { tria(); }
-        // Перевірка чи є трикутник рівностороннім, рівнобедреним або прямокутним
+
         double a = distanceBetweenPoints(points[0], points[1]);
         double b = distanceBetweenPoints(points[1], points[2]);
         double c = distanceBetweenPoints(points[2], points[0]);
+
         if (a + b <= c || b + c <= a || a + c <= b) {
             std::cout << triangleMessages[Invalid] << std::endl;
             return Invalid;
         }
+
         if (a == b && b == c) {
-            std::cout << triangleMessages[Isosceles] << std::endl;
+            if (a * a + b * b == c * c) {
+                std::cout << triangleMessages[Right] << std::endl;
+                return Right;
+            }
+            std::cout << triangleMessages[Equilateral] << std::endl;
             return Equilateral;
         }
 
         if (a == b || b == c || a == c) {
-            std::cout << triangleMessages[Equilateral] << std::endl;
+            if (a * a + b * b == c * c) {
+                std::cout << triangleMessages[Right] << std::endl;
+                return Right;
+            }
+            std::cout << triangleMessages[Isosceles] << std::endl;
             return Isosceles;
         }
 
@@ -98,9 +111,43 @@ public:
             std::cout << triangleMessages[Right] << std::endl;
             return Right;
         }
+
+        if (isConvex()) {
+            std::cout << "Чотирикутник є опуклим" << std::endl;
+            std::cout << triangleMessages[Convex] << std::endl;
+        } else {
+            std::cout << "Чотирикутник є впуклим" << std::endl;
+            std::cout << triangleMessages[Concave] << std::endl;
+        }
+
+
         std::cout << triangleMessages[Scalene] << std::endl;
         return Scalene;
     }
+
+    bool isConvex() const {
+        // Перевірка на впуклість
+        int numVertices = points.size();
+
+        if (numVertices < 4) {
+            return false; // Мінімум 4 вершини для чотирикутника
+        }
+
+        for (int i = 0; i < numVertices; ++i) {
+            const Point& p1 = points[i];
+            const Point& p2 = points[(i + 1) % numVertices];
+            const Point& p3 = points[(i + 2) % numVertices];
+
+            double crossProduct = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
+
+            if (crossProduct < 0) {
+                return false; // Знак перепутнувся, отже, чотирикутник невпуклий
+            }
+        }
+
+        return true; // Чотирикутник впуклий
+    }
+
 };
     class Quadrilateral : public Shape {
     protected:
@@ -214,6 +261,172 @@ public:
 
 
     };
+
+class Pentagon : public Shape {
+protected:
+    enum PentagonType {
+        Invalid,
+        Regular,
+        Irregular,
+        Convex,
+        Concave
+    };
+    static std::unordered_map<PentagonType, std::string> pentagonMessages;
+
+public:
+    Pentagon(const std::vector<Point>& pts) : Shape(pts) {}
+
+    void initializePentagonMessages() const {
+        pentagonMessages.insert({Invalid, "Даний п'ятикутник не може існувати"});
+        pentagonMessages.insert({Regular, "П'ятикутник - правильний"});
+        pentagonMessages.insert({Irregular, "П'ятикутник - неправильний"});
+        pentagonMessages.insert({Convex, "П'ятикутник - випуклий"});
+        pentagonMessages.insert({Concave, "П'ятикутник - невипуклий"});
+    }
+
+    bool isSpecial() const override {
+        if (pentagonMessages.empty()) {
+            initializePentagonMessages();
+        }
+
+        double side1 = distanceBetweenPoints(points[0], points[1]);
+        double side2 = distanceBetweenPoints(points[1], points[2]);
+        double side3 = distanceBetweenPoints(points[2], points[3]);
+        double side4 = distanceBetweenPoints(points[3], points[4]);
+        double side5 = distanceBetweenPoints(points[4], points[0]);
+
+        // Перевірка на існування
+        if (side1 + side2 + side3 + side4 <= side5 ||
+            side2 + side3 + side4 + side5 <= side1 ||
+            side3 + side4 + side5 + side1 <= side2 ||
+            side4 + side5 + side1 + side2 <= side3 ||
+            side5 + side1 + side2 + side3 <= side4) {
+            cout << pentagonMessages[Invalid] << '\n';
+            return false;
+        }
+
+        // Перевірка на правильність (усі сторони та кути рівні)
+        if (side1 == side2 && side2 == side3 && side3 == side4 && side4 == side5) {
+            cout << pentagonMessages[Regular] << '\n';
+            return true;
+        }
+
+        // Перевірка на випуклість або невипуклість
+        if (checkConvexity()) {
+            cout << pentagonMessages[Convex] << '\n';
+            return true;
+        } else {
+            cout << pentagonMessages[Concave] << '\n';
+            return true;
+        }
+
+        cout << "П'ятикутник звичайний" << std::endl;
+        return false;
+    }
+
+    // Функція для перевірки випуклості
+    bool checkConvexity() const {
+        int numVertices = points.size();
+        for (int i = 0; i < numVertices; ++i) {
+            const Point& p1 = points[i];
+            const Point& p2 = points[(i + 1) % numVertices];
+            const Point& p3 = points[(i + 2) % numVertices];
+            double crossProduct = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
+            if (crossProduct < 0) {
+                return false; // Невипуклий п'ятикутник
+            }
+        }
+        return true; // Випуклий п'ятикутник
+    }
+};
+
+class Polygon : public Shape {
+protected:
+    enum PolygonType {
+        Invalid,
+        Regular,
+        Irregular,
+        Convex,
+        Concave
+    };
+    static std::unordered_map<PolygonType, std::string> polygonMessages;
+    int numSides;
+
+public:
+    Polygon(const std::vector<Point>& pts) : Shape(pts), numSides(pts.size()) {}
+
+    void initializePolygonMessages() const {
+        polygonMessages.insert({Invalid, "Даний багатокутник не може існувати"});
+        polygonMessages.insert({Regular, "Багатокутник - правильний"});
+        polygonMessages.insert({Irregular, "Багатокутник - неправильний"});
+        polygonMessages.insert({Convex, "Багатокутник - випуклий"});
+        polygonMessages.insert({Concave, "Багатокутник - невипуклий"});
+    }
+
+    bool isSpecial() const override {
+        if (polygonMessages.empty()) {
+            initializePolygonMessages();
+        }
+
+        std::vector<double> sides;
+        for (int i = 0; i < numSides; ++i) {
+            sides.push_back(distanceBetweenPoints(points[i], points[(i + 1) % numSides]));
+        }
+
+        // Перевірка на існування
+        for (int i = 0; i < numSides; ++i) {
+            double sum = 0;
+            for (double side : sides) {
+                sum += side;
+            }
+            if (sum - sides[i] <= sides[i]) {
+                cout << polygonMessages[Invalid] << '\n';
+                return false;
+            }
+        }
+
+        // Перевірка на правильність (усі сторони рівні)
+        bool isRegular = true;
+        for (int i = 1; i < numSides; ++i) {
+            if (sides[i] != sides[0]) {
+                isRegular = false;
+                break;
+            }
+        }
+
+        if (isRegular) {
+            cout << polygonMessages[Regular] << '\n';
+            return true;
+        }
+
+        // Перевірка на випуклість або невипуклість
+        if (checkConvexity()) {
+            cout << polygonMessages[Convex] << '\n';
+            return true;
+        } else {
+            cout << polygonMessages[Concave] << '\n';
+            return true;
+        }
+
+        cout << "Багатокутник звичайний" << std::endl;
+        return false;
+    }
+
+    // Функція для перевірки випуклості
+    bool checkConvexity() const {
+        for (int i = 0; i < numSides; ++i) {
+            const Point& p1 = points[i];
+            const Point& p2 = points[(i + 1) % numSides];
+            const Point& p3 = points[(i + 2) % numSides];
+            double crossProduct = (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x);
+            if (crossProduct < 0) {
+                return false; // Невипуклий багатокутник
+            }
+        }
+        return true; // Випуклий багатокутник
+    }
+};
+
 /*
 class Pentagon : public Shape{
 private:
