@@ -7,16 +7,19 @@ int main() {
     vector<Shape*> shapes; // Вектор для зберігання об'єктів фігур
     vector<Point> points;
     while (true) {
-        std::cout << "Оберіть опцію:" << std::endl;
-        std::cout << "1. Додати трикутник" << std::endl;
-        std::cout << "2. Додати чотирикутник" << std::endl;
-        std::cout << "3. Додати п'ятикутник" << std::endl;
-        std::cout << "4. Додати багатокутник" << std::endl;
-        std::cout << "5. Переглянути інформацію про фігури" << std::endl;
-        std::cout << "6. Вийти" << std::endl;
+        cout << "Оберіть опцію:\n";
+        cout << "1. Додати трикутник\n";
+        cout << "2. Додати чотирикутник\n";
+        cout << "3. Додати п'ятикутник\n";
+        cout << "4. Додати багатокутник\n";
+        cout << "5. Переглянути інформацію про фігури\n";
+        cout << "6. Сортування фігур\n";
+        cout << "7. Сортування по перимтру/площі\n";
+        cout << "7. Сортування за обраним алгоритмом\n";
+        cout << "9. Вихід з программи\n";
 
         int choice;
-        std::cin >> choice;
+        cin >> choice;
 
         switch (choice) {
             case 1: {
@@ -25,8 +28,8 @@ int main() {
                 int v =3;
                 for (int i = 0; i < v; ++i) {
                     Point point;
-                    std::cout << "Введіть координати точки " << i + 1 << " (x y): ";
-                    std::cin >> point.x >> point.y;
+                    cout << "Введіть координати точки " << i + 1 << " (x y): ";
+                    cin >> point.x >> point.y;
                     points.push_back(point);
                 }
                 // Створити об'єкт Triangle
@@ -34,7 +37,7 @@ int main() {
                 // Додати об'єкт Triangle до вектора shapes
                 shapes.push_back(pTriangle);
                 points.clear();
-                std::cout << "Трикутник додано." << std::endl;
+                cout << "Трикутник додано.\n";
                 break;
             }
 
@@ -44,8 +47,8 @@ int main() {
                 int v =4;
                 for (int i = 0; i < v; ++i) {
                     Point point;
-                    std::cout << "Введіть координати точки " << i + 1 << " (x y): ";
-                    std::cin >> point.x >> point.y;
+                    cout << "Введіть координати точки " << i + 1 << " (x y): ";
+                    cin >> point.x >> point.y;
                     points.push_back(point);
                 }
                 // Створити об'єкт Triangle
@@ -53,7 +56,7 @@ int main() {
                 // Додати об'єкт Triangle до вектора shapes
                 shapes.push_back(pQuadrilater);
                 points.clear();
-                std::cout << "Чотирикутник додано." << std::endl;
+                cout << "Чотирикутник додано.\n";
                 break;
             }
             case 3: {
@@ -105,7 +108,7 @@ int main() {
             }
             case 6: {
                 // Сортування фігур
-                ShapeSorter::sortShapes(shapes); // Використовуйте власну реалізацію сортування
+                ShapeSorter::sortByPerimeter(shapes); // Використовуйте власну реалізацію сортування
                 std::cout << "Фігури було відсортовано." << std::endl;
                 break;
             }
@@ -116,7 +119,7 @@ int main() {
                 std::cin >> sortCriteria;
 
                 if (sortCriteria == "периметр") {
-                    ShapeSorter::sortShapesByPerimeter(shapes);
+                    ShapeSorter::sortByPerimeter(shapes);
                     std::cout << "Фігури було відсортовано за периметром." << std::endl;
                 } else if (sortCriteria == "площа") {
                     ShapeSorter::sortShapesByArea(shapes);

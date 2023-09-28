@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <unordered_map>
-
+#pragma once
 using namespace std;
 struct Point {
     double x;
@@ -426,73 +426,3 @@ public:
         return true; // Випуклий багатокутник
     }
 };
-
-/*
-class Pentagon : public Shape{
-private:
-    std::vector<Point> points;
-public:
-    Pentagon(const std::vector<Point>& pts) : points(pts) {}
-
-    // Функція для обчислення периметра багатокутника
-    double perimeter() const override {
-        double perimeter = 0.0;
-        int numVertices = points.size();
-
-        for (int i = 0; i < numVertices; ++i) {
-            perimeter += distanceBetweenPoints(points[i], points[(i + 1) % numVertices]);
-        }
-
-        return perimeter;
-    }
-
-    double area() const override {
-        // Обчислення площі прямокутника за формулою Гаусса
-        double a = distanceBetweenPoints(points[0], points[1]);
-        double b = distanceBetweenPoints(points[1], points[2]);
-        return a * b;
-    }
-    bool isSpecial() const override {
-        // Перевірка, чи є п'ятикутник ромбом
-        double sideLength = distanceBetweenPoints(points[0], points[1]);
-        for (int i = 1; i < 5; ++i) {
-            if (std::abs(distanceBetweenPoints(points[i], points[(i + 1) % 5]) - sideLength) > 1e-6) {
-                cout<<"Данний п'ятикутник не є ромбом\n";
-                return false; // Якщо хоча б одна сторона не рівна іншим, то не ромб
-            }
-        }
-        cout<<"Данний п'ятикутник є ромбом\n";
-        return true; // Усі сторони рівні, це ромб
-    }
-};
-
-class Polygon: public Shape{
-private:
-    std::vector<Point> points;
-public:
-    Polygon(const std::vector<Point>& pts) : points(pts) {}
-
-    // Функція для обчислення периметра багатокутника
-    double perimeter() const override {
-        double perimeter = 0.0;
-        int numVertices = points.size();
-
-        for (int i = 0; i < numVertices; ++i) {
-            perimeter += distanceBetweenPoints(points[i], points[(i + 1) % numVertices]);
-        }
-
-        return perimeter;
-    }
-
-    double area() const override {
-        // Обчислення площі прямокутника за формулою Гаусса
-        double a = distanceBetweenPoints(points[0], points[1]);
-        double b = distanceBetweenPoints(points[1], points[2]);
-        return a * b;
-    }
-    bool isSpecial() const override {
-        // Реалізація для перевірки прямокутників
-        // ...
-    }
-};
-*/

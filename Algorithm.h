@@ -11,12 +11,18 @@ public:
     static bool compareByPerimeter(const Shape* a, const Shape* b) {
         return a->perimeter() < b->perimeter();
     }
+    static bool compareByArea(const Shape* a, const Shape* b) {
+        return a->gaussArea() < b->gaussArea();
+    }
 
     // Сортування фігур за їхнім периметром у зростаючому порядку
     static void sortByPerimeter(std::vector<Shape*>& shapes) {
         std::sort(shapes.begin(), shapes.end(), compareByPerimeter);
     }
-    static void insertionSort(std::vector<Shape*>& shapes) {
+    static void sortShapesByArea(std::vector<Shape*>& shapes){
+        std::sort(shapes.begin(),shapes.end(), compareByArea);
+    }
+    static void insertionSort(std::vector<Shape*> shapes) {
         int n = shapes.size();
         for (int i = 1; i < n; ++i) {
             Shape* key = shapes[i];
