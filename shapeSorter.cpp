@@ -13,15 +13,15 @@ bool ShapeSorter::compareByArea(const Shape* a, const Shape* b) {
     return a->gaussArea() < b->gaussArea();
 }
 
-void ShapeSorter::sortByPerimeter(std::vector<Shape*>& shapes) {
-    std::sort(shapes.begin(), shapes.end(), compareByPerimeter);
+void ShapeSorter::sortByPerimeter(vector<Shape*>& shapes) {
+    sort(shapes.begin(), shapes.end(), compareByPerimeter);
 }
 
-void ShapeSorter::sortShapesByArea(std::vector<Shape*>& shapes) {
-    std::sort(shapes.begin(), shapes.end(), compareByArea);
+void ShapeSorter::sortShapesByArea(vector<Shape*>& shapes) {
+    sort(shapes.begin(), shapes.end(), compareByArea);
 }
 
-void ShapeSorter::insertionSort(std::vector<Shape*> shapes) {
+void ShapeSorter::insertionSort(vector<Shape*> shapes) {
     int n = shapes.size();
     for (int i = 1; i < n; ++i) {
         Shape* key = shapes[i];
@@ -34,7 +34,7 @@ void ShapeSorter::insertionSort(std::vector<Shape*> shapes) {
     }
 }
 
-void ShapeSorter::quickSort(std::vector<Shape*>& shapes, int low, int high) {
+void ShapeSorter::quickSort(vector<Shape*>& shapes, int low, int high) {
     if (low < high) {
         int pi = partition(shapes, low, high);
         quickSort(shapes, low, pi - 1);
@@ -42,20 +42,20 @@ void ShapeSorter::quickSort(std::vector<Shape*>& shapes, int low, int high) {
     }
 }
 
-int ShapeSorter::partition(std::vector<Shape*>& shapes, int low, int high) {
+int ShapeSorter::partition(vector<Shape*>& shapes, int low, int high) {
     Shape* pivot = shapes[high];
     int i = (low - 1);
     for (int j = low; j <= high - 1; j++) {
         if (compareByArea(shapes[j], pivot)) {
             i++;
-            std::swap(shapes[i], shapes[j]);
+            swap(shapes[i], shapes[j]);
         }
     }
-    std::swap(shapes[i + 1], shapes[high]);
+    swap(shapes[i + 1], shapes[high]);
     return (i + 1);
 }
 
-void ShapeSorter::mergeSort(std::vector<Shape*>& shapes, int left, int right) {
+void ShapeSorter::mergeSort(vector<Shape*>& shapes, int left, int right) {
     if (left < right) {
         int middle = left + (right - left) / 2;
         mergeSort(shapes, left, middle);
@@ -64,12 +64,12 @@ void ShapeSorter::mergeSort(std::vector<Shape*>& shapes, int left, int right) {
     }
 }
 
-void ShapeSorter::merge(std::vector<Shape*>& shapes, int left, int middle, int right) {
+void ShapeSorter::merge(vector<Shape*>& shapes, int left, int middle, int right) {
     int n1 = middle - left + 1;
     int n2 = right - middle;
 
-    std::vector<Shape*> leftArray(n1);
-    std::vector<Shape*> rightArray(n2);
+    vector<Shape*> leftArray(n1);
+    vector<Shape*> rightArray(n2);
 
     for (int i = 0; i < n1; i++) {
         leftArray[i] = shapes[left + i];
@@ -104,12 +104,12 @@ void ShapeSorter::merge(std::vector<Shape*>& shapes, int left, int middle, int r
     }
 }
 
-void ShapeSorter::bubbleSort(std::vector<Shape*>& shapes) {
+void ShapeSorter::bubbleSort(vector<Shape*>& shapes) {
     int n = shapes.size();
     for (int i = 0; i < n - 1; i++) {
         for (int j = 0; j < n - i - 1; j++) {
             if (compareByPerimeter(shapes[j], shapes[j + 1])) {
-                std::swap(shapes[j], shapes[j + 1]);
+                swap(shapes[j], shapes[j + 1]);
             }
         }
     }

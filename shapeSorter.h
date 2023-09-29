@@ -14,16 +14,16 @@ public:
     static bool compareByPerimeter(const Shape* a, const Shape* b);
     static bool compareByArea(const Shape* a, const Shape* b);
 
-    static void sortByPerimeter(std::vector<Shape*>& shapes);
-    static void sortShapesByArea(std::vector<Shape*>& shapes);
-    static void insertionSort(std::vector<Shape*> shapes);
-    static void quickSort(std::vector<Shape*>& shapes, int low, int high);
-    static int partition(std::vector<Shape*>& shapes, int low, int high);
+    static void sortByPerimeter(vector<Shape*>& shapes);
+    static void sortShapesByArea(vector<Shape*>& shapes);
+    static void insertionSort(vector<Shape*> shapes);
+    static void quickSort(vector<Shape*>& shapes, int low, int high);
+    static int partition(vector<Shape*>& shapes, int low, int high);
 
-    static void mergeSort(std::vector<Shape*>& shapes, int left, int right);
-    static void merge(std::vector<Shape*>& shapes, int left, int middle, int right);
+    static void mergeSort(vector<Shape*>& shapes, int left, int right);
+    static void merge(vector<Shape*>& shapes, int left, int middle, int right);
 
-    static void bubbleSort(std::vector<Shape*>& shapes);
+    static void bubbleSort(vector<Shape*>& shapes);
 };
 
 #endif //INC_198432_SHAPESORTER_H

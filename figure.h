@@ -14,11 +14,11 @@ struct Point {
 
 class Shape {
 protected:
-    std::vector<Point> points;
+    vector<Point> points;
 
 public:
     void printPoints() const;
-    Shape(const std::vector<Point>& pts);
+    Shape(const vector<Point>& pts);
     static double distanceBetweenPoints(const Point& p1, const Point& p2);
     virtual bool isSpecial() const = 0;
     double perimeter() const;
@@ -37,10 +37,10 @@ protected:
         Convex,
         Concave
     };
-    static std::unordered_map<TriangleType, std::string> triangleMessages;
+    static unordered_map<TriangleType, string> triangleMessages;
 
 public:
-    Triangle(const std::vector<Point>& pts);
+    Triangle(const vector<Point>& pts);
     bool isSpecial() const override;
     bool isConvex() const;
 };
@@ -56,10 +56,10 @@ protected:
         AngularQuadrilateral,
         ConvexQuadrilateral
     };
-    static std::unordered_map<QuadrilateralType, std::string> quadrilateralMessages;
+    static unordered_map<QuadrilateralType, string> quadrilateralMessages;
 
 public:
-    Quadrilateral(const std::vector<Point>& pts);
+    Quadrilateral(const vector<Point>& pts);
     void initializeQuadrilateralMessages() const;
     bool isSpecial() const override;
     double angleBetweenSides(double a, double b, double c) const;
@@ -74,10 +74,10 @@ protected:
         Convex,
         Concave
     };
-    static std::unordered_map<PentagonType, std::string> pentagonMessages;
+    static unordered_map<PentagonType, string> pentagonMessages;
 
 public:
-    Pentagon(const std::vector<Point>& pts);
+    Pentagon(const vector<Point>& pts);
     void initializePentagonMessages() const;
     bool isSpecial() const override;
     bool checkConvexity() const;
@@ -91,11 +91,11 @@ protected:
         Convex,
         Concave
     };
-    static std::unordered_map<PolygonType, std::string> polygonMessages;
+    static unordered_map<PolygonType, string> polygonMessages;
     int numSides;
 
 public:
-    Polygon(const std::vector<Point>& pts);
+    Polygon(const vector<Point>& pts);
     void initializePolygonMessages() const;
     bool isSpecial() const override;
     bool checkConvexity() const;

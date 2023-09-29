@@ -4,15 +4,15 @@
 void Shape::printPoints() const {
     int pointNumber = 1;
     for (const Point& p : points) {
-        std::cout << "Point " << pointNumber << ": (" << p.x << ", " << p.y << ")\n";
+        cout << "Point " << pointNumber << ": (" << p.x << ", " << p.y << ")\n";
         pointNumber++;
     }
 }
 
-Shape::Shape(const std::vector<Point>& pts) : points(pts) {}
+Shape::Shape(const vector<Point>& pts) : points(pts) {}
 
 double Shape::distanceBetweenPoints(const Point& p1, const Point& p2) {
-    return std::sqrt(std::pow(p2.x - p1.x, 2) + std::pow(p2.y - p1.y, 2));
+    return sqrt(pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2));
 }
 
 double Shape::perimeter() const {
@@ -41,12 +41,12 @@ double Shape::gaussArea() const {
         totalArea += (currentPoint.x * nextPoint.y - nextPoint.x * currentPoint.y);
     }
 
-    return std::abs(totalArea) / 2.0;
+    return abs(totalArea) / 2.0;
 }
 //Triangle//
-std::unordered_map<Triangle::TriangleType, std::string> Triangle::triangleMessages;
+unordered_map<Triangle::TriangleType, string> Triangle::triangleMessages;
 
-Triangle::Triangle(const std::vector<Point>& pts) : Shape(pts) {}
+Triangle::Triangle(const vector<Point>& pts) : Shape(pts) {}
 
 bool Triangle::isSpecial() const {
     if (triangleMessages.empty()) {
@@ -64,42 +64,42 @@ bool Triangle::isSpecial() const {
     double c = distanceBetweenPoints(points[2], points[0]);
 
     if (a + b <= c || b + c <= a || a + c <= b) {
-        std::cout << triangleMessages[Invalid] << std::endl;
+        cout << triangleMessages[Invalid] << endl;
         return Invalid;
     }
 
     if (a == b && b == c) {
         if (a * a + b * b == c * c) {
-            std::cout << triangleMessages[Right] << std::endl;
+            cout << triangleMessages[Right] << endl;
             return Right;
         }
-        std::cout << triangleMessages[Equilateral] << std::endl;
+        cout << triangleMessages[Equilateral] << endl;
         return Equilateral;
     }
 
     if (a == b || b == c || a == c) {
         if (a * a + b * b == c * c) {
-            std::cout << triangleMessages[Right] << std::endl;
+            cout << triangleMessages[Right] << endl;
             return Right;
         }
-        std::cout << triangleMessages[Isosceles] << std::endl;
+        cout << triangleMessages[Isosceles] << endl;
         return Isosceles;
     }
 
     if (a * a + b * b == c * c || b * b + c * c == a * a || c * c + a * a == b * b) {
-        std::cout << triangleMessages[Right] << std::endl;
+        cout << triangleMessages[Right] << endl;
         return Right;
     }
 
     if (isConvex()) {
-        std::cout << "Чотирикутник є опуклим" << std::endl;
-        std::cout << triangleMessages[Convex] << std::endl;
+        cout << "Чотирикутник є опуклим" << endl;
+        cout << triangleMessages[Convex] << endl;
     } else {
-        std::cout << "Чотирикутник є впуклим" << std::endl;
-        std::cout << triangleMessages[Concave] << std::endl;
+        cout << "Чотирикутник є впуклим" << endl;
+        cout << triangleMessages[Concave] << endl;
     }
 
-    std::cout << triangleMessages[Scalene] << std::endl;
+    cout << triangleMessages[Scalene] << endl;
     return Scalene;
 }
 
@@ -126,9 +126,9 @@ bool Triangle::isConvex() const {
     return true; // Чотирикутник впуклий
 }
 //Quadrilateral//
-std::unordered_map<Quadrilateral::QuadrilateralType, std::string> Quadrilateral::quadrilateralMessages;
+unordered_map<Quadrilateral::QuadrilateralType, string> Quadrilateral::quadrilateralMessages;
 
-Quadrilateral::Quadrilateral(const std::vector<Point>& pts) : Shape(pts) {}
+Quadrilateral::Quadrilateral(const vector<Point>& pts) : Shape(pts) {}
 
 void Quadrilateral::initializeQuadrilateralMessages() const {
     quadrilateralMessages.insert({Invalid, "Данний чотирикутник не може існувати"});
@@ -204,12 +204,12 @@ bool Quadrilateral::isSpecial() const {
         return true;
     }
 
-    cout << "Чотирикутник звичайний" << std::endl;
+    cout << "Чотирикутник звичайний" << endl;
     return false;
 }
 
 double Quadrilateral::angleBetweenSides(double a, double b, double c) const {
-    return std::acos((a * a + b * b - c * c) / (2 * a * b)) * (180.0 / M_PI);
+    return acos((a * a + b * b - c * c) / (2 * a * b)) * (180.0 / M_PI);
 }
 
 bool Quadrilateral::checkConvexity() const {
@@ -226,9 +226,9 @@ bool Quadrilateral::checkConvexity() const {
     return true; // Випуклий чотирикутник
 }
 //Pentagon//
-std::unordered_map<Pentagon::PentagonType, std::string> Pentagon::pentagonMessages;
+unordered_map<Pentagon::PentagonType, string> Pentagon::pentagonMessages;
 
-Pentagon::Pentagon(const std::vector<Point>& pts) : Shape(pts) {}
+Pentagon::Pentagon(const vector<Point>& pts) : Shape(pts) {}
 
 void Pentagon::initializePentagonMessages() const {
     pentagonMessages.insert({Invalid, "Даний п'ятикутник не може існувати"});
@@ -274,7 +274,7 @@ bool Pentagon::isSpecial() const {
         return true;
     }
 
-    cout << "П'ятикутник звичайний" << std::endl;
+    cout << "П'ятикутник звичайний" << endl;
     return false;
 }
 
@@ -293,9 +293,9 @@ bool Pentagon::checkConvexity() const {
     return true; // Випуклий п'ятикутник
 }
 //Polygon//
-std::unordered_map<Polygon::PolygonType, std::string> Polygon::polygonMessages;
+unordered_map<Polygon::PolygonType, string> Polygon::polygonMessages;
 
-Polygon::Polygon(const std::vector<Point>& pts) : Shape(pts), numSides(pts.size()) {}
+Polygon::Polygon(const vector<Point>& pts) : Shape(pts), numSides(pts.size()) {}
 
 void Polygon::initializePolygonMessages() const {
     polygonMessages.insert({Invalid, "Даний багатокутник не може існувати"});
@@ -310,7 +310,7 @@ bool Polygon::isSpecial() const {
         initializePolygonMessages();
     }
 
-    std::vector<double> sides;
+    vector<double> sides;
     for (int i = 0; i < numSides; ++i) {
         sides.push_back(distanceBetweenPoints(points[i], points[(i + 1) % numSides]));
     }
@@ -322,7 +322,7 @@ bool Polygon::isSpecial() const {
             sum += side;
         }
         if (sum - sides[i] <= sides[i]) {
-            std::cout << polygonMessages[Invalid] << '\n';
+            cout << polygonMessages[Invalid] << '\n';
             return false;
         }
     }
@@ -337,20 +337,20 @@ bool Polygon::isSpecial() const {
     }
 
     if (isRegular) {
-        std::cout << polygonMessages[Regular] << '\n';
+        cout << polygonMessages[Regular] << '\n';
         return true;
     }
 
     // Перевірка на випуклість або невипуклість
     if (checkConvexity()) {
-        std::cout << polygonMessages[Convex] << '\n';
+        cout << polygonMessages[Convex] << '\n';
         return true;
     } else {
-        std::cout << polygonMessages[Concave] << '\n';
+        cout << polygonMessages[Concave] << '\n';
         return true;
     }
 
-    std::cout << "Багатокутник звичайний" << std::endl;
+    cout << "Багатокутник звичайний" << endl;
     return false;
 }
 
